@@ -13,11 +13,12 @@ import "swiper/css/swiper.css";
 // 引入接口函数对象
 import * as API from "@/api";
 // 按需引入element-ui
-import { Button, MessageBox, Message } from "element-ui";
+import { Button, MessageBox, Message, Input } from "element-ui";
 // 注册组件
 // element-ui组件分两种
 // 注册方式一
 Vue.component(Button.name, Button);
+Vue.component(Input.name, Input);
 // 注册方式二
 // Vue.use(Button);
 

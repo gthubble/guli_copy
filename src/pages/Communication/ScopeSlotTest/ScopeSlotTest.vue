@@ -1,84 +1,59 @@
 <template>
-  <div>
-    <!-- 默认插槽和具名插槽 -->
-    <!-- 第一个组件 -->
-    <Child>
-      <template>
-        <!-- 这里面写的就是父组件给子组件传递的html\css结构 -->
-        <p>嘿嘿</p>
-      </template>
+    <div>
+        <!-- <Child> -->
+        <!-- 在组件标签内部写上template标签，就是插槽，而在组件内部需要写slot标签来接收这个template-->
+        <!-- 不写名字的是默认插槽，写名字的是具名插槽 -->
+        <!-- 如果组件内部写了槽，父组件却没有传递template，那么将会显示槽里面写的默认的结构 -->
+        <!-- <template>
+                <div>热巴依然爱我</div>
+            </template>
+            <template slot="star">
+                <div>热巴现在爱我</div>
+            </template>
+        </Child>
+        <Child>
+            <template>
+                <div>娜扎也很爱我</div>
+            </template>
+        </Child> -->
 
-      <template slot="xxx">
-        <a href="">呵呵</a>
-      </template>
+        <!-- ??????????????????????????作用域插槽，，，重要?????????????????????????????????????? -->
+        <!-- 1、数据在父组件中
+             2、插槽的结构在父组件中搭建
+             3、传给子组件的数据需要遍历并回传给父组件 -->
 
-    </Child>
-
-    <!-- 第二个组件 -->
-    <Child>
-      <template>
-        <!-- 这里面写的就是父组件给子组件传递的html\css结构 -->
-        <button>按钮</button>
-      </template>
-    </Child>
-
-
-
-    <!-- 作用域插槽的演示 -->
-    <!-- 
-      作用域插槽完成的事情
-
-      父子之间通信
-
-      1\ 数据是在父组件当中的
-      2\ 数据最终传递给了子组件进行展示v-for
-      3\ 子组件在展示数据的过程中,数据的结构是由父组件说了算的
-    -->
-
-    <h2>效果一: 显示TODO列表时, 已完成的TODO为绿色</h2>
-    <!-- <List :todos="todos">
-      <template slot-scope="scopeProps"> -->
-        <!-- scopeProps最终是一个对象,接收子组件作用域插槽回传给父组件的数据组成的对象
-        {
-          todo:todo
-        }
-        -->
-        <!-- <span :style="{color:scopeProps.todo.isComplete?'green':'black'}">{{scopeProps.todo.text}}</span>
-
-      </template> -->
-    <!-- </List> -->
-    <hr>
-
-    <h2>效果二: 显示TODO列表时, 带序号, TODO的颜色为蓝绿搭配</h2>
-
-    <List :todos="todos">
-      <template slot-scope="{todo,index}">
-        <h2 :style="{color:index % 2===0?'blue':'green'}"><span>{{index+1}}</span>{{todo.text}}</h2>
-      </template>
-    </List>
-
-  </div>
+        <!-- 第一步、先将数据传递给子组件 -->
+        <List :todos="todos">
+            <!-- 第三步、使用slot-scope="obj"接收子组件回传的数据，这个数据是一个对象 -->
+            <template slot-scope="obj">
+                <!-- 第四步、使用接收的数据写结构 -->
+                <h2 :style="{ color: obj.todo.isComplete ? 'green' : 'red' }">
+                    {{ obj.todo.text }}
+                </h2>
+            </template>
+        </List>
+    </div>
 </template>
 
 <script type="text/ecmascript-6">
-  import List from './List'
-  import Child from '@/pages/Communication/ScopeSlotTest/Child'
-  export default {
-    name: 'ScopeSlotTest',
-    data () {
-      return {
-        todos: [
-          {id: 1, text: 'AAA', isComplete: false},
-          {id: 2, text: 'BBB', isComplete: true},
-          {id: 3, text: 'CCC', isComplete: false},
-          {id: 4, text: 'DDD', isComplete: false},
-        ]
-      }
+import List from "./List";
+import Child from "@/pages/Communication/ScopeSlotTest/Child";
+export default {
+    name: "ScopeSlotTest",
+    data() {
+        return {
+            todos: [
+                { id: 1, text: "AAA", isComplete: false },
+                { id: 2, text: "BBB", isComplete: true },
+                { id: 3, text: "CCC", isComplete: false },
+                { id: 4, text: "DDD", isComplete: false },
+            ],
+        };
     },
 
     components: {
-      List,
-      Child
-    }
-  }
+        List,
+        Child,
+    },
+};
 </script>

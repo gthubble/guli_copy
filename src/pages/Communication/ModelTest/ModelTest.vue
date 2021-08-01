@@ -1,45 +1,40 @@
 <template>
-  <div>
-    <h2>深入v-model</h2>
-    <input type="text" v-model="msg">
-    <span>我爱你{{msg}}</span>
-    <br>
+    <div>
+        <h2>深入v-model</h2>
+        <input type="text" v-model="msg" />
+        <span>这是{{ msg }}</span>
+        <br />
+        <!-- v-model的本质：v-bind 和input事件结合就是v-model，input事件：当输入框内的内容改变时调用 -->
+        <input type="text" :value="msg" @input="msg = $event.target.value" />
 
-    <!-- v-model本质其实是单向数据绑定v-bind和input事件的组合 -->
-    <input type="text" :value="msg" @input="msg = $event.target.value">
-    <span>我爱你{{msg}}</span>
+        <!-- 第一步: :value="msg" 实现组件间通信，传递给子组件value属性-->
+        <!-- 第四步： @input="msg = $event"给子组件绑定自定义事件 并通过子组件传递的值改变msg-->
+        <CustomInput :value="msg" @input="msg = $event"></CustomInput>
+        <!-- ？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？
+            组件标签使用v-model时相当于上一行代码的简写，v-model会自动传递给子组件一个value属性，和自定义事件@input="msg = $event"
+        注意：上面的value和input在v-model中是写死的，想要实现和上面一样的功能，必须在子组件中使用props接收value属性，并且使用$emit
+        触发绑定的input自定义事件
+        ？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？ -->
+        <CustomInput v-model="msg"></CustomInput>
+        <!-- 插件标签也是组件标签 -->
+        <el-input v-model="msg"></el-input>
 
-    <!-- 表单类元素： input  select  textarea -->
-
-    <!-- v-model在组件标签身上的作用
-    :value="msg"在html标签身上是单向数据绑定
-    :value="msg"在组件标签身上是props组件通信
-    @input  html标签身上是原生dom事件
-    @input  组件标签身上是自定义事件
-    -->
-    <!-- 达到父子数据是同步的 -->
-    <CustomInput :value="msg" @input="msg = $event"></CustomInput>
-
-    <!-- 可以认为自定义el-input组件 -->
-    <CustomInput v-model="msg"></CustomInput>
-    
-    <el-input v-model="msg"></el-input>
-
-  </div>
+        <!-- 总结：v-model的本质 就是v-bind 和input事件结合-->
+        <!-- v-model不仅可以实现单个组件内数据的双向绑定，而且可以实现父子之间的数据同步 -->
+    </div>
 </template>
 
 <script type="text/ecmascript-6">
-  import CustomInput from './CustomInput.vue'
-  export default {
-    name: 'ModelTest',
+import CustomInput from "./CustomInput.vue";
+export default {
+    name: "ModelTest",
     components: {
-      CustomInput
+        CustomInput,
     },
-    data(){
-      return {
-        msg:'赵丽颖'
-      }
-    }
-
-  }
+    data() {
+        return {
+            msg: "test",
+        };
+    },
+};
 </script>
